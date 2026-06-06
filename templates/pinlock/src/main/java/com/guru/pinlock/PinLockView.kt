@@ -145,7 +145,7 @@ fun PinLockView() {
         modifier =
           Modifier.clickable {
             if (inputPin.isNotEmpty()) {
-              inputPin.removeLast()
+              inputPin.removeAt(inputPin.lastIndex)
             }
           },
       )
