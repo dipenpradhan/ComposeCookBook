@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Archive
 import androidx.compose.material.icons.filled.Delete
@@ -29,10 +30,11 @@ import kotlinx.coroutines.launch
 fun SwipeableLists() {
   val albums = remember { AlbumsDataProvider.albums.toMutableStateList() }
   val snackbarHostState = remember { SnackbarHostState() }
+  val listState = rememberLazyListState()
   val scope = rememberCoroutineScope()
 
   Box(modifier = Modifier.fillMaxSize()) {
-    LazyColumn {
+    LazyColumn(state = listState) {
       items(items = albums, key = { it.id }) { album ->
         SwipeableListItem(
           album = album,
@@ -50,7 +52,11 @@ fun SwipeableLists() {
                     duration = SnackbarDuration.Short,
                   )
                 if (result == SnackbarResult.ActionPerformed) {
-                  albums.add(index.coerceAtMost(albums.size), album)
+                  val restoreAt = index.coerceAtMost(albums.size)
+                  albums.add(restoreAt, album)
+                  // LazyColumn keeps the first visible item anchored, so a row re-inserted above
+                  // it would silently land off-screen. Scroll it back into view.
+                  listState.animateScrollToItem(restoreAt)
                 }
               }
             }
