@@ -24,7 +24,7 @@ import org.robolectric.annotation.GraphicsMode
  */
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
-@Config(qualifiers = "w360dp-h640dp")
+@Config(sdk = [35], qualifiers = "w360dp-h640dp")
 class InterestTagScreenshotTest {
 
   @Test

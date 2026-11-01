@@ -27,9 +27,11 @@ android {
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
+  // Compose 1.12 (BOM 2026.09.00) ships inline bytecode built with JVM target 11,
+  // so the app module must target at least JVM 11 (targeting 17 to match buildSrc).
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
   buildFeatures { compose = true }
   lint { abortOnError = false }
@@ -40,7 +42,7 @@ android {
 // JVM target and opt-ins are configured through the Kotlin compiler options.
 kotlin {
   compilerOptions {
-    jvmTarget.set(JvmTarget.JVM_1_8)
+    jvmTarget.set(JvmTarget.JVM_17)
     optIn.add("kotlin.RequiresOptIn")
   }
 }
